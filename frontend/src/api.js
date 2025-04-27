@@ -1,0 +1,33 @@
+import axios from 'axios';
+
+const API_URL = 'http://localhost:5000/api/calculators';
+
+// Получить список всех калькуляторов
+export const getCalculators = async () => {
+  const response = await axios.get(API_URL);
+  return response.data;
+};
+
+// Получить один калькулятор по типу
+export const getCalculator = async (type) => {
+  const response = await axios.get(`${API_URL}/type/${type}`);
+  return response.data;
+};
+
+// Создать новый калькулятор
+export const createCalculator = async (calculator) => {
+  const response = await axios.post(API_URL, calculator);
+  return response.data;
+};
+
+// Обновить существующий калькулятор по ID
+export const updateCalculator = async (id, calculator) => {
+  const response = await axios.put(`${API_URL}/${id}`, calculator);
+  return response.data;
+};
+
+// Удалить калькулятор по ID
+export const deleteCalculator = async (id) => {
+  const response = await axios.delete(`${API_URL}/${id}`);
+  return response.data;
+};

@@ -1,0 +1,31 @@
+.home {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.home h2 {
+  margin-top: 0;
+  color: #4b6cb7;
+}
+
+.home ul {
+  list-style: none;
+  padding: 0;
+}
+
+.home ul li {
+  margin: 10px 0;
+}
+
+.home ul li a {
+  color: #182848;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color .2s;
+}
+
+.home ul li a:hover {
+  color: #4b6cb7;
+}
