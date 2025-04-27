@@ -14,36 +14,38 @@ const CATEGORY_TEMPLATES = {
     defaultRate: 9.6,
     fields: [
       { key: 'amount', label: 'Сумма кредита', type: 'number' },
-      { key: 'term', label: 'Срок кредита (лет)', type: 'number' },
-      { key: 'rate', label: 'Процентная ставка (%)', type: 'number' }
+      { key: 'term',   label: 'Срок кредита (лет)', type: 'number' },
+      { key: 'rate',   label: 'Процентная ставка (%)', type: 'number' },
     ]
   },
   car: {
     defaultRate: 3.5,
     fields: [
-      { key: 'amount', label: 'Сумма кредита', type: 'number' },
-      { key: 'term', label: 'Срок кредита (лет)', type: 'number' },
-      { key: 'rate', label: 'Процентная ставка (%)', type: 'number' }
+      { key: 'amount',    label: 'Сумма кредита',        type: 'number' },
+      { key: 'term',      label: 'Срок кредита (лет)',   type: 'number' },
+      { key: 'rate',      label: 'Процентная ставка (%)',type: 'number' },
+      { key: 'vehicleCost', label: 'Стоимость авто',     type: 'number' },
     ]
   },
   consumer: {
     defaultRate: 14.5,
     fields: [
-      { key: 'amount', label: 'Сумма кредита', type: 'number' },
-      { key: 'term', label: 'Срок кредита (лет)', type: 'number' },
-      { key: 'rate', label: 'Процентная ставка (%)', type: 'number' }
+      { key: 'amount', label: 'Сумма кредита',         type: 'number' },
+      { key: 'term',   label: 'Срок кредита (лет)',    type: 'number' },
+      { key: 'rate',   label: 'Процентная ставка (%)', type: 'number' },
+      { key: 'income', label: 'Ежемесячный доход',     type: 'number' },
     ]
   },
   pension: {
     defaultRate: 0,
     fields: [
-      { key: 'initial', label: 'Начальная сумма', type: 'number' },
-      { key: 'contribution', label: 'Ежемесячный взнос', type: 'number' },
-      { key: 'term', label: 'Срок (лет)', type: 'number' },
-      { key: 'rate', label: 'Ожидаемая доходность (%)', type: 'number' }
+      { key: 'initial',  label: 'Начальная сумма',     type: 'number' },
+      { key: 'contribution', label: 'Взнос в год',    type: 'number' },
+      { key: 'years',    label: 'Срок (лет)',          type: 'number' },
+      { key: 'rate',     label: 'Ожидаемая доходность (%)', type: 'number' },
     ]
   }
-};
+};  
 
 export default function Admin() {
   const [calculators, setCalculators] = useState([]);

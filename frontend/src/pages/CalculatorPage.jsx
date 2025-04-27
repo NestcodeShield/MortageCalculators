@@ -1,83 +1,135 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 function CalculatorPage() {
   const { type } = useParams();
-  const [amount, setAmount] = useState('');
-  const [rate, setRate] = useState('');
-  const [years, setYears] = useState('');
+  const [calculator, setCalculator] = useState(null);
+  const [values, setValues] = useState({});
   const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
-  // Функция для расчета ипотечного платежа
-  const calculateMortgage = () => {
-    const principal = parseFloat(amount);
-    const annualRate = parseFloat(rate);
-    const months = parseInt(years) * 12;
+  useEffect(() => {
+    async function fetchCalculator() {
+      try {
+        const { data } = await axios.get(`http://localhost:5000/api/calculators/type/${type}`);
 
-    if (isNaN(principal) || isNaN(annualRate) || isNaN(months) || principal <= 0 || annualRate <= 0 || months <= 0) {
-      setError('Пожалуйста, заполните все поля корректно.');
-      return;
+        setCalculator(data);
+
+        // Инициализация значений всех полей
+        const initialValues = {};
+        data.fields.forEach(field => {
+          initialValues[field.key] = '';
+        });
+        setValues(initialValues);
+      } catch (err) {
+        setError('Не удалось загрузить калькулятор.');
+      }
     }
+    fetchCalculator();
+  }, [type]);
 
-    const monthlyRate = annualRate / 100 / 12;
-    const payment = (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
-    const totalPayment = payment * months;
-
-    setResult({
-      monthlyPayment: payment.toFixed(2),
-      totalPayment: totalPayment.toFixed(2),
-      totalInterest: (totalPayment - principal).toFixed(2),
-    });
-    setError(null);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    calculateMortgage();
+    calculate();
   };
+
+  const calculate = () => {
+    try {
+      if (type === 'pension') {
+        // Расчёт пенсионных накоплений
+        const initial = parseFloat(values.initial);
+        const contribution = parseFloat(values.contribution);
+        const rate = parseFloat(values.rate) / 100;
+        const term = parseInt(values.term, 10);
+
+        if ([initial, contribution, rate, term].some(v => isNaN(v) || v < 0)) {
+          throw new Error();
+        }
+
+        const futureValue = initial * Math.pow(1 + rate, term)
+          + contribution * ((Math.pow(1 + rate, term) - 1) / rate);
+
+        setResult({
+          futureValue: futureValue.toFixed(2)
+        });
+      } else {
+        // Расчёт стандартного кредита (ипотека, авто, потреб)
+        const amount = parseFloat(values.amount);
+        const rate = parseFloat(values.rate);
+        const term = parseInt(values.term, 10);
+
+        if ([amount, rate, term].some(v => isNaN(v) || v <= 0)) {
+          throw new Error();
+        }
+
+        const months = term * 12;
+        const monthlyRate = rate / 100 / 12;
+        const monthlyPayment = (amount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
+        const totalPayment = monthlyPayment * months;
+
+        setResult({
+          monthlyPayment: monthlyPayment.toFixed(2),
+          totalPayment: totalPayment.toFixed(2),
+          totalInterest: (totalPayment - amount).toFixed(2)
+        });
+      }
+
+      setError('');
+    } catch {
+      setError('Пожалуйста, заполните все поля корректно.');
+      setResult(null);
+    }
+  };
+
+  if (error) {
+    return <div style={{ color: 'red' }}>{error}</div>;
+  }
+
+  if (!calculator) {
+    return <div>Загрузка...</div>;
+  }
 
   return (
     <div>
-      <h2>Калькулятор: {type}</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <h2>{calculator.name}</h2>
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Сумма кредита:</label>
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Годовая процентная ставка (%):</label>
-          <input
-            type="number"
-            value={rate}
-            onChange={(e) => setRate(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Срок кредита (лет):</label>
-          <input
-            type="number"
-            value={years}
-            onChange={(e) => setYears(e.target.value)}
-            required
-          />
-        </div>
+        {calculator.fields.map((field) => (
+          <div key={field.key} style={{ marginBottom: '10px' }}>
+            <label>{field.label}:</label>
+            <input
+              type={field.type}
+              name={field.key}
+              value={values[field.key]}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        ))}
         <button type="submit">Рассчитать</button>
       </form>
 
       {result && (
-        <div>
-          <h3>Результаты расчета:</h3>
-          <p>Ежемесячный платеж: {result.monthlyPayment} ₽</p>
-          <p>Общая сумма выплат: {result.totalPayment} ₽</p>
-          <p>Общая переплата: {result.totalInterest} ₽</p>
+        <div style={{ marginTop: '20px' }}>
+          <h3>Результаты:</h3>
+          {type === 'pension' ? (
+            <p>Накопленная сумма: {result.futureValue} ₽</p>
+          ) : (
+            <>
+              <p>Ежемесячный платеж: {result.monthlyPayment} ₽</p>
+              <p>Общая сумма выплат: {result.totalPayment} ₽</p>
+              <p>Общая переплата: {result.totalInterest} ₽</p>
+            </>
+          )}
         </div>
       )}
     </div>
