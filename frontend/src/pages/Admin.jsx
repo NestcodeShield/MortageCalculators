@@ -1,4 +1,3 @@
-// src/pages/Admin.jsx
 import React, { useState, useEffect } from 'react';
 import {
   getCalculators,
@@ -8,7 +7,7 @@ import {
 } from '../api';
 import './Admin.css';
 
-// Предустановленные шаблоны для основных категорий
+//ШАБЛОНЫ КАЛЬКУЛЯТОРОВ
 const CATEGORY_TEMPLATES = {
   mortgage: {
     defaultRate: 9.6,
@@ -87,7 +86,7 @@ export default function Admin() {
     newFields[index][key] = value;
     setForm({ ...form, fields: newFields });
   }
-
+  //НОВОЕ ПОЛЕ КАЛЬКУЛЯТОРА
   function addField() {
     setForm({
       ...form,
@@ -210,7 +209,6 @@ export default function Admin() {
         </div>
         {error && <p className="error">{error}</p>}
       </form>
-
       <h2>Существующие калькуляторы</h2>
       <ul className="calc-list">
         {calculators.map(calc => (

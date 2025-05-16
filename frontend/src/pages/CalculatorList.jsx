@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getCalculators, updateCalculator } from '../api';
+//СПИСОК КАЛЬКУЛЯТОРОВ
 
 function CalculatorList() {
   const [calculators, setCalculators] = useState([]);
@@ -11,6 +12,7 @@ function CalculatorList() {
     };
     fetchCalculators();
   }, []);
+
 
   const handleEdit = async (id, updatedFields) => {
     await updateCalculator(id, { fields: updatedFields });

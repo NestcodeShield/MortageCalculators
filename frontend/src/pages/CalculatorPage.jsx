@@ -9,6 +9,7 @@ function CalculatorPage() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
 
+  //ПОЛУЧЕНИЕ ДАННЫХ И ПРИСВОЕНИЕ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ
   useEffect(() => {
     async function fetchCalculator() {
       try {
@@ -16,7 +17,6 @@ function CalculatorPage() {
 
         setCalculator(data);
 
-        // Инициализация значений всех полей
         const initialValues = {};
         data.fields.forEach(field => {
           initialValues[field.key] = '';
@@ -42,10 +42,11 @@ function CalculatorPage() {
     calculate();
   };
 
+  //ФУНКЦИЯ РАСЧЕТА
   const calculate = () => {
     try {
       if (type === 'pension') {
-        // Расчёт пенсионных накоплений
+        //ПЕНСИЯ
         const initial = parseFloat(values.initial);
         const contribution = parseFloat(values.contribution);
         const rate = parseFloat(values.rate) / 100;
@@ -62,7 +63,7 @@ function CalculatorPage() {
           futureValue: futureValue.toFixed(2)
         });
       } else {
-        // Расчёт стандартного кредита (ипотека, авто, потреб)
+        //АВТО
         const amount = parseFloat(values.amount);
         const rate = parseFloat(values.rate);
         const term = parseInt(values.term, 10);

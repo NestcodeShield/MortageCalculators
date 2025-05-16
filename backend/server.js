@@ -8,12 +8,11 @@ const Calculator = require('./models/Calculator');  // ← импорт моде
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Наши дефолтные калькуляторы для сидирования
-const defaultCalcs = [
+//СТАРТОВЫЕ КАЛЬКУЛЯТОРЫ
+const defaultCalcs = [  
   {
     name: 'Ипотечный калькулятор',
     type: 'mortgage',
@@ -78,7 +77,7 @@ const defaultCalcs = [
   }
 ];
 
-// MongoDB connection + сидирование
+//МОНГО
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(async () => {
     console.log('MongoDB connected');
@@ -92,14 +91,13 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   })
   .catch(err => console.log('MongoDB connection error:', err));
 
-// Test route
+//Тест
 app.get('/', (req, res) => {
   res.send('Backend is working!');
 });
 
-// Routes
 app.use('/api/calculators', calculatorRoutes);
 
-// Start server
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

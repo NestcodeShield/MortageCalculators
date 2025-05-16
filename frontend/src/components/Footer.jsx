@@ -1,4 +1,4 @@
-// src/components/Footer.jsx
+//ПРОСТО ФУТЕР
 import React from 'react';
 import './AppStyles.css';
 

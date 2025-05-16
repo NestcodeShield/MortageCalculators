@@ -6,6 +6,7 @@ import './Home.css'
 function Home() {
   const [calculators, setCalculators] = useState([]);
 
+  //ЗАПРОС НА ПОЛУЧЕНИЕ СПИСКА
   useEffect(() => {
     const fetchCalculators = async () => {
       try {
@@ -20,6 +21,7 @@ function Home() {
   }, []);
 
   return (
+    //CПИСОК
     <div>
       <h2>Главная страница</h2>
       <p>Список доступных калькуляторов:</p>

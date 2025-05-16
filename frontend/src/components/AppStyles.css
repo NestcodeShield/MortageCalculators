@@ -240,7 +240,7 @@
   }
   
   /* =====================================================
-     CALCULATOR PAGE
+     CALC PAGE
      ===================================================== */
   .calculator {
     background: #fff;
@@ -302,21 +302,21 @@
   input,
 select,
 textarea {
-  max-width: 300px;      /* не шире 300px */
-  padding: 6px 10px;     /* компактный padding */
-  font-size: 0.95rem;    /* чуть мельче текст */
+  max-width: 300px;     
+  padding: 6px 10px;     
+  font-size: 0.95rem;    
 }
 
-/* Если нужен ещё более плотный вид в админке */
+
 .admin-form input,
 .admin-form select,
 .admin-form textarea {
-  max-width: 280px;      /* чуть уже */
+  max-width: 280px;
   padding: 5px 8px;
   font-size: 0.9rem;
 }
 
-/* Для динамических полей в ряд */
+
 .field-row input,
 .field-row select {
   max-width: 200px;
@@ -324,7 +324,6 @@ textarea {
   font-size: 0.9rem;
 }
 
-/* При фокусе подчёркивание */
 input:focus,
 select:focus,
 textarea:focus {
@@ -332,7 +331,6 @@ textarea:focus {
   outline: none;
 }
 
-/* Опционально: ограничить ширину кнопок тоже */
 button {
   max-width: 160px;
 }

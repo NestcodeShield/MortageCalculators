@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Calculator = require('../models/Calculator');
+//РОУТЕРЫ ДЛЯ КАЛЬКУЛЯТОРОВ
 
-// Получить все калькуляторы
+
+
+
+//ПОЛУЧИТЬ ВСЁ
 router.get('/', async (req, res) => {
   try {
     const calculators = await Calculator.find();
@@ -12,7 +16,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Получить калькулятор по типу (ВАЖНО: этот маршрут должен быть ПЕРЕД ':id')
+//ПОИСК ПО SLUG ТИПУ
 router.get('/type/:type', async (req, res) => {
   try {
     const calculator = await Calculator.findOne({ type: req.params.type });
@@ -23,7 +27,7 @@ router.get('/type/:type', async (req, res) => {
   }
 });
 
-// Получить один калькулятор по ID
+//ПОИСК ПО ID
 router.get('/:id', async (req, res) => {
   try {
     const calculator = await Calculator.findById(req.params.id);
@@ -34,7 +38,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Создать новый калькулятор
+// СОХРАНЕНИЕ КАЛЬКУЛЯТОРА 
 router.post('/', async (req, res) => {
   const { name, type, defaultRate, fields } = req.body;
 
@@ -48,7 +52,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Обновить калькулятор
 router.put('/:id', async (req, res) => {
   try {
     const calculator = await Calculator.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -59,7 +62,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Удалить калькулятор
+//УДАЛЕНИЕ КАЛЬКУЛЯТОРА
 router.delete('/:id', async (req, res) => {
   try {
     const calculator = await Calculator.findByIdAndDelete(req.params.id);
